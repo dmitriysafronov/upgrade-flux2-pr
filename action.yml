@@ -24,12 +24,12 @@ runs:
         shell: bash
         id: upgrade
         run: |
-          UGLY_VERSION="$(flux -v)"
-          VERSION="v${UGLY_VERSION#*flux version }"
-          flux install --version="${VERSION}" \
+          UGLY_FLUX_VERSION="$(flux -v)"
+          FLUX_VERSION="v${UGLY_FLUX_VERSION#*flux version }"
+          flux install --version="${FLUX_VERSION}" \
             --components-extra=image-reflector-controller,image-automation-controller \
             --export > ./${{ inputs.directory }}/${{ inputs.file }}
-          echo "::set-output name=flux_version::$VERSION"
+          echo "flux_version=$FLUX_VERSION" >> $GITHUB_OUTPUT
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
