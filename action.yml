@@ -32,7 +32,7 @@ runs:
           echo "flux_version=$FLUX_VERSION" >> $GITHUB_OUTPUT
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           signoff: true
           delete-branch: true
