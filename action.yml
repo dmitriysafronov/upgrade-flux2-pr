@@ -1,0 +1,52 @@
+name: "Upgrade FluxCD 2 in cluster directory"
+description: "Upgrade FluxCD 2 in cluster directory"
+inputs:
+  directory:
+    description: "Cluster directory"
+    required: true
+  file:
+    description: "FluxCD 2 flux-system/gotk-components.yaml file"
+    default: "flux-system/gotk-components.yaml"
+  token:
+    description: "Workflow token"
+    default: ${{ secrets.GITHUB_TOKEN }}
+  labels:
+    description: "Pull request labels"
+    default: |
+      flux/upgrade
+runs:
+  using: "composite"
+  steps:
+      - name: Use latest FluxCD client
+        uses: fluxcd/flux2/action@main
+
+      - name: Upgrade FLuxCD in cluster
+        shell: bash
+        id: upgrade
+        run: |
+          UGLY_VERSION="$(flux -v)"
+          VERSION="v${UGLY_VERSION#*flux version }"
+          flux install --version="${VERSION}" \
+            --components-extra=image-reflector-controller,image-automation-controller \
+            --export > ./${{ inputs.directory }}/${{ inputs.file }}
+          echo "::set-output name=flux_version::$VERSION"
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          signoff: true
+          delete-branch: true
+          committer: "fluxcdbot <fluxcdbot@users.noreply.github.com>"
+          author: "fluxcdbot <fluxcdbot@users.noreply.github.com>"
+          draft: false
+          labels: |
+            ${{ inputs.labels }}
+          token: ${{ inputs.token }}
+          branch: "${{ inputs.directory }}/${{ inputs.file }}/${{ steps.upgrade.outputs.flux_version }}"
+          title: "chore(deps): upgrade [${{ inputs.directory }}] flux components to ${{ steps.upgrade.outputs.flux_version }}"
+          commit-message: "chore(deps): upgrade [${{ inputs.directory }}] flux components to ${{ steps.upgrade.outputs.flux_version }}"
+          body: |
+            Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.upgrade.outputs.flux_version }}
+branding:
+  icon: folder
+  color: white
