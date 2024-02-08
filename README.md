@@ -1,3 +1,3 @@
 # upgrade-flux2-pr
 
-Upgrade FluxCD 2 in cluster directory.
+GitHub Action to upgrade FluxCD 2 in cluster directory.
