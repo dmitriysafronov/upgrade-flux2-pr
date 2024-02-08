@@ -9,7 +9,7 @@ inputs:
     default: "flux-system/gotk-components.yaml"
   token:
     description: "Workflow token"
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: ${{ github.token }}
   labels:
     description: "Pull request labels"
     default: |
