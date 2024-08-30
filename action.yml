@@ -28,7 +28,8 @@ runs:
         id: upgrade
         run: |
           UGLY_FLUX_VERSION="$(flux -v)"
-          FLUX_VERSION="v${UGLY_FLUX_VERSION#*flux version}"
+          PRETTY_FLUX_VERSION="${UGLY_FLUX_VERSION#*flux version}"
+          FLUX_VERSION="v${PRETTY_FLUX_VERSION}"
           flux install --version="${FLUX_VERSION}" \
             --components-extra=image-reflector-controller,image-automation-controller \
             --export > ./${{ inputs.directory }}/${{ inputs.file }}
