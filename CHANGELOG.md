@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.3] - 2025-04-22
+
+### 🚜 Refactor
+
+- Pin versions
+
 ## [2.1.2] - 2024-08-30
 
 ### 🐛 Bug Fixes
