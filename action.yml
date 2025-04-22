@@ -18,7 +18,7 @@ runs:
   using: "composite"
   steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Use latest FluxCD client
         uses: fluxcd/flux2/action@main
@@ -36,7 +36,7 @@ runs:
           echo "flux_version=$FLUX_VERSION" >> $GITHUB_OUTPUT
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v7.0.8
         with:
           signoff: true
           delete-branch: true
